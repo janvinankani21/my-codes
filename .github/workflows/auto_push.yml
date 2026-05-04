@@ -1,0 +1,31 @@
+name: Daily Python Program Pusher
+
+on:
+  schedule:
+    # 15:30 UTC is 9:00 PM IST (Indian Standard Time)
+    - cron: '30 15 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI for testing
+
+jobs:
+  generate_and_push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          
+      - name: Generate new Python program
+        run: python generate_code.py
+        
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add programs/
+          # Check if there are any changes to commit
+          git diff --quiet && git diff --staged --quiet || (git commit -m "feat: Auto-generated daily Python program" && git push)
