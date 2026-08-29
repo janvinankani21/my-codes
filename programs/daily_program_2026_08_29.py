@@ -1,21 +1,26 @@
 # Automatically generated daily program
-# Date: 2026-08-29 00:03:04
+# Date: 2026-08-29 18:44:22
 
-import random
-
-def simulate_guessing_game():
-    target = random.randint(1, 100)
-    print(f"Target number is {target}")
-    attempts = 0
-    while True:
-        guess = random.randint(1, 100)
-        attempts += 1
-        if guess == target:
-            print(f"Guessed {target} correctly in {attempts} attempts!")
-            break
-        elif attempts > 1000:
-            print("Took too many attempts.")
-            break
+class TodoList:
+    def __init__(self):
+        self.tasks = []
+        
+    def add_task(self, task):
+        self.tasks.append({"task": task, "done": False})
+        
+    def mark_done(self, index):
+        if 0 <= index < len(self.tasks):
+            self.tasks[index]["done"] = True
+            
+    def display(self):
+        for i, t in enumerate(self.tasks):
+            status = "[x]" if t["done"] else "[ ]"
+            print(f"{i}. {status} {t['task']}")
 
 if __name__ == "__main__":
-    simulate_guessing_game()
+    todo = TodoList()
+    todo.add_task("Learn Python")
+    todo.add_task("Automate GitHub Push")
+    todo.mark_done(1)
+    print("My Tasks:")
+    todo.display()
